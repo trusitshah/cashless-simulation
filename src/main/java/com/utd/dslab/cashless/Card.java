@@ -1,6 +1,7 @@
 package com.utd.dslab.cashless;
 
 import com.utd.dslab.cashless.exceptions.CashlessException;
+import com.utd.dslab.cashless.security.SHA256;
 import com.utd.dslab.cashless.transaction.ECCSign;
 import com.utd.dslab.cashless.transaction.ECCVerify;
 import com.utd.dslab.cashless.transaction.PlainTransaction;
@@ -55,7 +56,9 @@ public class Card {
      * @param paymentGateway
      * @return newly created card.
      * @throws CashlessException If the payment gateway type is not server, a cashless exception will be raised.
+     * @throws GeneralSecurityException This error occurs when there is an issue in writing initial value to the card.
      */
+
     public static Card createCard(String uniqueId, PaymentGateway paymentGateway) throws CashlessException, GeneralSecurityException {
         if(paymentGateway.getType() != PaymentGateway.type.SERVER) {
             throw new CashlessException("A card cannot be created using a payment gateway of type " + paymentGateway.getType());
@@ -64,8 +67,8 @@ public class Card {
         byte[] hashkey = new byte[8];
         new SecureRandom().nextBytes(hashkey);
         String passcode = generateRandomPasscode();
-        PlainTransaction plainTransaction = new PlainTransaction(uniqueId, uniqueId, 0, passcode.getBytes(), hashkey, System.currentTimeMillis(), (short) (1));
-
+        byte[] passcodeHash = SHA256.getHMAC(passcode, hashkey);
+        PlainTransaction plainTransaction = new PlainTransaction(paymentGateway.getUniqueId(), uniqueId, 0, passcodeHash, hashkey, System.currentTimeMillis(), (short) (1));
         return new Card(uniqueId, TransactionManager.encryptAndSignTransaction(plainTransaction, ECCSign.getInstance(KeypairRepository.getKeyPair(paymentGateway.getUniqueId()).getPrivate())), paymentGateway.getUniqueId(), passcode);
     }
 

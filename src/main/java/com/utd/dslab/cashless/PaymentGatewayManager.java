@@ -24,10 +24,10 @@ public class PaymentGatewayManager {
         return createPaymentGateway(PaymentGateway.type.BOTH);
     }
 
-    public static PaymentGateway createPaymentGateway(PaymentGateway.type type) throws NoSuchAlgorithmException {
+    private static PaymentGateway createPaymentGateway(PaymentGateway.type type) throws NoSuchAlgorithmException {
         KeyPair keyPair = KeyPairGenerator.getInstance("EC").generateKeyPair();
 
-        String uniqueId = Integer.toString(sequenceNumber++);
+        String uniqueId = String.format("%08x",sequenceNumber++);
         PaymentGateway paymentGateway = new PaymentGateway(uniqueId, "pg_" + uniqueId, type, keyPair);
 
         KeypairRepository.addKeypair(uniqueId, keyPair);

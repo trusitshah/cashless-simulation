@@ -1,6 +1,7 @@
 package com.utd.dslab.cashless;
 
 import com.utd.dslab.cashless.exceptions.CashlessException;
+import com.utd.dslab.cashless.security.SHA256;
 import com.utd.dslab.cashless.transaction.ECCSign;
 import com.utd.dslab.cashless.transaction.ECCVerify;
 import com.utd.dslab.cashless.transaction.PlainTransaction;
@@ -148,8 +149,12 @@ public class PaymentGateway {
             throw new CashlessException("com.utd.dslab.cashless.Card can not have amount more than " + TransactionManager.MAX_AMOUNT);
         }
 
-        PlainTransaction transaction = new PlainTransaction(uniqueId, card.getUniqueId(), newAmount, card.getPasscode().getBytes(), hashkey, System.currentTimeMillis(), (short) (prevTransaction.getSequenceNumber() + 1));
-        PrivateKey transactionPrivateKey = KeypairRepository.getKeyPair(prevTransactionPaymentGateway).getPrivate();
+        new SecureRandom().nextBytes(hashkey);
+        String passcode = card.getPasscode();
+        byte[] passcodeHash = SHA256.getHMAC(passcode, hashkey);
+
+        PlainTransaction transaction = new PlainTransaction(uniqueId, card.getUniqueId(), newAmount, passcodeHash, hashkey, System.currentTimeMillis(), (short) (prevTransaction.getSequenceNumber() + 1));
+        PrivateKey transactionPrivateKey = KeypairRepository.getKeyPair(uniqueId).getPrivate();
 
         byte[] transactionBytes = TransactionManager.encryptAndSignTransaction(transaction,ECCSign.getInstance(transactionPrivateKey));
 

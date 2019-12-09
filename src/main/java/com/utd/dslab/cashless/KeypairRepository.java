@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 public class KeypairRepository {
 
-    private static HashMap<String, KeyPair> keypairs;
+    private static HashMap<String, KeyPair> keypairs = new HashMap<>();
 
     public static void addKeypair(String paymentGatewayId, KeyPair keyPair) {
         keypairs.put(paymentGatewayId, keyPair);
