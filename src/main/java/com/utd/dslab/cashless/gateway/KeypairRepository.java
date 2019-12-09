@@ -1,4 +1,4 @@
-package com.utd.dslab.cashless;
+package com.utd.dslab.cashless.gateway;
 
 import java.security.KeyPair;
 import java.util.HashMap;
@@ -17,7 +17,7 @@ public class KeypairRepository {
 
     @Override
     public String toString() {
-        return "com.utd.dslab.cashless.KeypairRepository{" +
+        return "com.utd.dslab.cashless.gateway.KeypairRepository{" +
                 "keypairs=" + keypairs +
                 '}';
     }

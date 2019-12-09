@@ -1,5 +1,6 @@
-package com.utd.dslab.cashless;
+package com.utd.dslab.cashless.card;
 
+import com.utd.dslab.cashless.gateway.PaymentGateway;
 import com.utd.dslab.cashless.exceptions.CashlessException;
 
 import java.security.GeneralSecurityException;

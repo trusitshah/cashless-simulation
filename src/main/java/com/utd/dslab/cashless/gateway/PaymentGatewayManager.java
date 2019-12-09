@@ -1,4 +1,4 @@
-package com.utd.dslab.cashless;
+package com.utd.dslab.cashless.gateway;
 
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;

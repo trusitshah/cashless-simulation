@@ -1,5 +1,7 @@
-package com.utd.dslab.cashless;
+package com.utd.dslab.cashless.card;
 
+import com.utd.dslab.cashless.gateway.KeypairRepository;
+import com.utd.dslab.cashless.gateway.PaymentGateway;
 import com.utd.dslab.cashless.exceptions.CashlessException;
 import com.utd.dslab.cashless.security.SHA256;
 import com.utd.dslab.cashless.transaction.ECCSign;
@@ -135,7 +137,7 @@ public class Card {
 
     @Override
     public String toString() {
-        return "com.utd.dslab.cashless.Card{" +
+        return "com.utd.dslab.cashless.card.Card{" +
                 "uniqueId='" + uniqueId + '\'' +
                 ", com.utd.dslab.cashless.transaction=" + Arrays.toString(transaction) +
                 ", paymentGatewayId='" + paymentGatewayId + '\'' +

@@ -1,5 +1,6 @@
-package com.utd.dslab.cashless;
+package com.utd.dslab.cashless.gateway;
 
+import com.utd.dslab.cashless.card.Card;
 import com.utd.dslab.cashless.exceptions.CashlessException;
 import com.utd.dslab.cashless.security.SHA256;
 import com.utd.dslab.cashless.transaction.ECCSign;
@@ -16,7 +17,7 @@ public class PaymentGateway {
      * ADD: Adds money to the card.
      * PURCHASE: Makes purchase using the card.
      * BOTH: Can add money and make purchases.
-     * SERVER: com.utd.dslab.cashless.PaymentGateway at card manufacturing site. It is used to create the initial com.utd.dslab.cashless.transaction.
+     * SERVER: com.utd.dslab.cashless.gateway.PaymentGateway at card manufacturing site. It is used to create the initial com.utd.dslab.cashless.transaction.
      */
     public enum type {
         ADD, PURCHASE, BOTH, SERVER
@@ -146,7 +147,7 @@ public class PaymentGateway {
         if(newAmount < TransactionManager.MIN_AMOUNT) {
             throw new CashlessException("Insufficient money in the card!");
         } else if (newAmount > TransactionManager.MAX_AMOUNT){
-            throw new CashlessException("com.utd.dslab.cashless.Card can not have amount more than " + TransactionManager.MAX_AMOUNT);
+            throw new CashlessException("com.utd.dslab.cashless.card.Card can not have amount more than " + TransactionManager.MAX_AMOUNT);
         }
 
         new SecureRandom().nextBytes(hashkey);
@@ -163,7 +164,7 @@ public class PaymentGateway {
 
     @Override
     public String toString() {
-        return "com.utd.dslab.cashless.PaymentGateway{" +
+        return "com.utd.dslab.cashless.gateway.PaymentGateway{" +
                 "uniqueId='" + uniqueId + '\'' +
                 ", name='" + name + '\'' +
                 ", type=" + type +
